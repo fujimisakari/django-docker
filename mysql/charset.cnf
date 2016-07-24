@@ -1,0 +1,20 @@
+[mysqld]
+
+# Query log
+general_log=1
+general_log_file="/tmp/sql.log"
+log_output=FILE
+
+# Slow Query log
+slow_query_log=1
+slow_query_log_file="/tmp/slow_sql.log"
+long_query_time = 1
+log_queries_not_using_indexes
+log_slow_admin_statements
+
+# character
+character-set-server=utf8
+collation-server=utf8_general_ci
+
+[client]
+default-character-set=utf8

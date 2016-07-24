@@ -1,0 +1,42 @@
+dev_app:
+  image: todo_app
+  restart: always
+  env_file: ./app/env
+  expose:
+    - "8000"
+  links:
+    - dev_mysql:db
+    - dev_redis:redis
+  volumes:
+    - ./app:/usr/src/app
+  command: ./manage.py runserver 0.0.0.0:8000
+
+dev_nginx:
+  build: ./nginx
+  restart: always
+  ports:
+    - "80:80"
+  links:
+    - dev_app:app
+  volumes_from:
+    - dev_app
+
+dev_mysql:
+  build: ./mysql
+  restart: always
+  ports:
+    - "3306:3306"
+  volumes_from:
+    - dev_storage
+
+dev_redis:
+  image: redis:latest
+  restart: always
+  ports:
+    - "6379:6379"
+  volumes_from:
+    - dev_storage
+  command: redis-server --appendonly yes
+
+dev_storage:
+  build: ./storage

@@ -1,0 +1,4 @@
+Django==1.9.8
+gunicorn==19.6.0
+redis==2.10.5
+PyMySQL==0.7.5

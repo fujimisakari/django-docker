@@ -1,0 +1,42 @@
+prod_app:
+  image: todo_app
+  restart: always
+  env_file: ./app/.env
+  expose:
+    - "8000"
+  links:
+    - prod_mysql:db
+    - prod_redis:redis
+  volumes:
+    - ./app:/usr/src/app
+  command: /usr/local/bin/gunicorn app.wsgi:application -w 2 -b :8000
+
+prod_nginx:
+  build: ./nginx
+  restart: always
+  ports:
+    - "80:80"
+  links:
+    - prod_app:app
+  volumes_from:
+    - prod_app
+
+prod_mysql:
+  build: ./mysql
+  restart: always
+  ports:
+    - "3306:3306"
+  volumes_from:
+    - prod_storage
+
+prod_redis:
+  image: redis:latest
+  restart: always
+  ports:
+    - "6379:6379"
+  volumes_from:
+    - prod_storage
+  command: redis-server --appendonly yes
+
+prod_storage:
+  build: ./storage

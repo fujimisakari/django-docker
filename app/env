@@ -1,0 +1,5 @@
+DB_HOST=db
+DB_NAME=todo
+DB_USERNAME=root
+DB_PASSWORD=
+DB_PORT=
