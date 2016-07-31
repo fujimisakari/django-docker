@@ -11,12 +11,19 @@ Qiita post ->
 
 ### OS X Instructions
 
-1: Create App Build images
+1: Create App and nginx build images
 ```
 $ cd ./app
 $ docker build .
 $ docker tag <app image id> todo_app
 ```
+
+```
+$ cd ./nginx
+$ docker build .
+$ docker tag <app image id> todo_nginx
+```
+
 
 2: Start services for development
 ```

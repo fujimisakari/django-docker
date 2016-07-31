@@ -1,7 +1,7 @@
 prod_app:
   image: todo_app
   restart: always
-  env_file: ./app/.env
+  env_file: ./app/env
   expose:
     - "8000"
   links:
@@ -12,12 +12,17 @@ prod_app:
   command: /usr/local/bin/gunicorn app.wsgi:application -w 2 -b :8000
 
 prod_nginx:
-  build: ./nginx
+  image: todo_nginx
   restart: always
   ports:
     - "80:80"
+    - "443:443"
   links:
     - prod_app:app
+  volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    - ./nginx/ssl:/etc/nginx/ssl
+    - ./nginx/production.conf:/etc/nginx/conf.d/production.conf
   volumes_from:
     - prod_app
 

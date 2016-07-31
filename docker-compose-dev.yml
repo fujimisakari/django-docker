@@ -12,12 +12,17 @@ dev_app:
   command: ./manage.py runserver 0.0.0.0:8000
 
 dev_nginx:
-  build: ./nginx
+  image: todo_nginx
   restart: always
   ports:
     - "80:80"
+    - "443:443"
   links:
     - dev_app:app
+  volumes:
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    - ./nginx/ssl:/etc/nginx/ssl
+    - ./nginx/development.conf:/etc/nginx/conf.d/development.conf
   volumes_from:
     - dev_app
 
